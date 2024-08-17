@@ -18,28 +18,56 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('images/bytebank_logo.png'),
           ),
-          Row(
-            children: <Widget>[
-               _FutureItem(name:'Transfer',icon:Icons.monetization_on),
-               _FutureItem(name:'Transaction Feed',icon:Icons.description),
-            ],
-          )
+          Container(
+            height: 120,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(right: 16.0),
+              children: <Widget>[
+                _FutureItem(
+                  name: 'Transfer',
+                  icon: Icons.monetization_on,
+                  onClick: () => _showContactList(context),
+                ),
+                _FutureItem(
+                  name: 'Transaction Feed',
+                  icon: Icons.description,
+                  onClick: () => _showContactList(context),
+                ),
+                _FutureItem(
+                  name: 'Accounts',
+                  icon: Icons.account_balance,
+                  onClick: () => _showContactList(context),
+                ),
+                // Se quiser adicionar mais itens, certifique-se de que sejam únicos
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  void _showContactList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ContactsList(),
       ),
     );
   }
 }
 
 class _FutureItem extends StatelessWidget {
-  
-   final String name;
-   final IconData icon;
-  
-    const _FutureItem({
-    super.key,
+  final String name;
+  final IconData icon;
+  final Function onClick;
+
+  _FutureItem({
+    Key? key,
     required this.name,
     required this.icon,
-  });
+    required this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +76,7 @@ class _FutureItem extends StatelessWidget {
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ContactsList(),
-              ),
-            );
-          },
+          onTap: () => onClick(),
           child: Container(
             padding: const EdgeInsets.all(8.0),
             height: 100,
@@ -70,7 +92,7 @@ class _FutureItem extends StatelessWidget {
                 ),
                 Text(
                   name,
-                  style:const TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16.0,
                   ),
