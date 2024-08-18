@@ -3,7 +3,7 @@
 *.env
 /info/
 /temp/
-readme.md
+*.md
 
  
  

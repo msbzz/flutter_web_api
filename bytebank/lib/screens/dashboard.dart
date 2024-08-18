@@ -35,12 +35,7 @@ class Dashboard extends StatelessWidget {
                   icon: Icons.description,
                   onClick: () => _showTransactions(context),
                 ),
-                // _FutureItem(
-                //   name: 'Accounts',
-                //   icon: Icons.account_balance,
-                //   onClick: () => _showContactList(context),
-                // ),
-                // Se quiser adicionar mais itens, certifique-se de que sejam únicos
+          
               ],
             ),
           ),
