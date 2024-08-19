@@ -1,6 +1,6 @@
+import 'package:bytebank/components/future_delayed.dart';
 import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/http/webclient.dart';
-import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transanction.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class _TransactionsListState extends State<TransactionsList> {
   @override
   void initState() {
     super.initState();
-    futureTransactions = findAll();
+    futureTransactions =delayedFetch(4,()=> findAll());
   }
 
   @override
@@ -32,7 +32,7 @@ class _TransactionsListState extends State<TransactionsList> {
               return Progress();
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return Progress(message:'Error: ${snapshot.error}');
+                return Progress(message:'Error 404: Endpoint not found',icon:Icons.warning);
               }
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final transactions = snapshot.data!;
@@ -61,7 +61,7 @@ class _TransactionsListState extends State<TransactionsList> {
                   },
                 );
               } else {
-                return Progress(message:'No transactions found');
+                return Progress(message:'No transactions found',icon:Icons.warning);
               }
             default:
               return Progress();

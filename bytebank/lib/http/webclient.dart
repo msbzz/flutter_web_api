@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transanction.dart';
 import 'package:http/http.dart';
 
@@ -12,7 +11,7 @@ Future<List<Transaction>> findAll() async {
   ]); 
   final Uri url = Uri.parse('http://192.168.0.64:8080/transactions');
  
-  final Response response = await client.get(url);
+  final Response response = await client.get(url).timeout(Duration(seconds:2));
 
   final List<dynamic> decodedJson = jsonDecode(response.body);
   // Inicializando a lista de transações corretamente
