@@ -8,31 +8,22 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 Future<List<Transaction>> findAll() async {
   Client client = InterceptedClient.build(interceptors: [
-    LoggingInterceptor(),
-  ]);
+      LoggingInterceptor(),
+  ]); 
   final Uri url = Uri.parse('http://192.168.0.64:8080/transactions');
-
+ 
   final Response response = await client.get(url);
 
   final List<dynamic> decodedJson = jsonDecode(response.body);
+  // Inicializando a lista de transações corretamente
   final List<Transaction> transactions = [];
 
-  for (Map<String, dynamic> transactionJson in decodedJson) {
-    final Map<String, dynamic> contactJson = transactionJson['contact'];
-
-    final Transaction transaction =
-    Transaction(
-        transactionJson['value'],
-        Contact(
-          0,
-          contactJson['name'],
-          contactJson['accountNumber'],
-        ));
-
-     transactions.add(transaction);   
+  // Mapeando o JSON decodificado para objetos do tipo Transaction
+  for (var json in decodedJson) {
+    transactions.add(Transaction.fromJson(json));
   }
-
-  return transactions;
+  
+  return transactions;  
 }
 
 class LoggingInterceptor implements InterceptorContract {

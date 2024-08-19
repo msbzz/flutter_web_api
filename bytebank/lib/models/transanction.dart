@@ -14,4 +14,11 @@ class Transaction {
     return 'Transaction{value: $value, contact: $contact}';
   }
 
+    factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      json['value'],
+      Contact.fromJson(json['contact']),
+    );
+    }
+
 }
