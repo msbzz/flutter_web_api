@@ -29,7 +29,7 @@ class Progress extends StatelessWidget {
             ),
             Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(message,style:TextStyle(fontSize:fontSize )),
+            child: Text(message,style:TextStyle(fontSize:fontSize ),textAlign: TextAlign.center,),
           )
         ],
       ),

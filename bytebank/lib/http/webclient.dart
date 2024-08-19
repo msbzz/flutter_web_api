@@ -7,17 +7,16 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 Future<List<Transaction>> findAll() async {
   Client client = InterceptedClient.build(interceptors: [
-      LoggingInterceptor(),
+    LoggingInterceptor(),
   ]); 
   final Uri url = Uri.parse('http://192.168.0.64:8080/transactions');
  
-  final Response response = await client.get(url).timeout(Duration(seconds:2));
+  final Response response = await client.get(url).timeout(Duration(seconds: 4));
 
   final List<dynamic> decodedJson = jsonDecode(response.body);
-  // Inicializando a lista de transações corretamente
+  
   final List<Transaction> transactions = [];
 
-  // Mapeando o JSON decodificado para objetos do tipo Transaction
   for (var json in decodedJson) {
     transactions.add(Transaction.fromJson(json));
   }
@@ -28,19 +27,28 @@ Future<List<Transaction>> findAll() async {
 class LoggingInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
-    // print('>> Request <<');
-    // print('>> url : ${data.baseUrl} <<');
-    // print('>> headers : ${data.headers} <<');
-    // print('>> body : ${data.body} <<');
+    // Aqui você pode adicionar logs ou manipular a requisição antes de enviá-la
     return data;
   }
 
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    // print('>> Response <<');
-    // print('>> url : ${data.statusCode} <<');
-    // print('>> headers : ${data.headers} <<');
-    // print('>> body : ${data.body} <<');
+    if (data.statusCode >= 400) {
+      throw HttpExceptionWithStatus(data.statusCode,  data.body ?? 'Erro desconhecido');
+    }
     return data;
+  }
+}
+
+// Definindo uma exceção customizada para capturar o código de status HTTP
+class HttpExceptionWithStatus implements Exception {
+  final int statusCode;
+  final String message;
+
+  HttpExceptionWithStatus(this.statusCode, this.message);
+
+  @override
+  String toString() {
+    return 'HttpExceptionWithStatus(statusCode: $statusCode, message: $message)';
   }
 }

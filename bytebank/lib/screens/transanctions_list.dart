@@ -32,7 +32,14 @@ class _TransactionsListState extends State<TransactionsList> {
               return Progress();
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return Progress(message:'Error 404: Endpoint not found',icon:Icons.warning);
+                final error = snapshot.error;
+                String errorMessage = 'Erro desconhecido : ${error.toString()}';
+
+                if (error is HttpExceptionWithStatus) {
+                  final statusCode = error.statusCode;
+                  errorMessage = 'Erro $statusCode: Endpoint não encontrado';
+                }                
+                return Progress(message:errorMessage,icon:Icons.warning);
               }
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final transactions = snapshot.data!;

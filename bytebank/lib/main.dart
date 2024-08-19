@@ -3,7 +3,7 @@ import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  findAll().then((transactions)=> print('new transactions ${transactions}'));
+  //findAll().then((transactions)=> print('new transactions ${transactions}'));
   runApp(BytebankApp());
 }
 
