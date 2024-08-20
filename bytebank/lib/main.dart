@@ -5,7 +5,7 @@ import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  save(Transaction(350.0,Contact(0,'marcela',4000))).then((transaction)=>print('>>> adicionado : ${transaction.toString()}  <<<'));
+  //save(Transaction(350.0,Contact(0,'marcela',4000))).then((transaction)=>print('>>> adicionado : ${transaction.toString()}  <<<'));
   //findAll().then((transactions)=> print('new transactions ${transactions}'));
   runApp(BytebankApp());
 }
