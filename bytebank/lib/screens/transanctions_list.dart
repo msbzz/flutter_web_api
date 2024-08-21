@@ -1,6 +1,7 @@
 import 'package:bytebank/components/future_delayed.dart';
 import 'package:bytebank/components/progress.dart';
-import 'package:bytebank/http/webclient.dart';
+import 'package:bytebank/http/interceptors/loging_intercetor.dart';
+import 'package:bytebank/http/web_clients/transactcion_webclient.dart';
 import 'package:bytebank/models/transanction.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,11 @@ class TransactionsList extends StatefulWidget {
 
 class _TransactionsListState extends State<TransactionsList> {
   late Future<List<Transaction>> futureTransactions;
-
+  final TransactionWebClient _webClient = TransactionWebClient();
   @override
   void initState() {
     super.initState();
-    futureTransactions =delayedFetch(4,()=> findAll());
+    futureTransactions =delayedFetch(2,()=> _webClient.findAll());
   }
 
   @override

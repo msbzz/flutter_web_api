@@ -1,4 +1,5 @@
 import 'package:bytebank/components/show_snack_bar.dart';
+import 'package:bytebank/http/web_clients/transactcion_webclient.dart';
 import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transanction.dart';
@@ -15,6 +16,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
+  final TransactionWebClient _webClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +68,20 @@ class _TransactionFormState extends State<TransactionForm> {
                       if (value != 0.0 && value > 0.0) {
                         final transactionCreated =
                             Transaction(value, widget.contact);
-                        save(transactionCreated).then((transaction) {
+                        _webClient.save(transactionCreated).then((transaction) {
                           if (transaction != null) {
-                            ShowSnackBar(context, 'Transação realizada com sucesso.');
+                            ShowSnackBar(
+                                context, 'Transação realizada com sucesso.');
                             Navigator.pop(context);
-                          } else{
-                            ShowSnackBar(context, 'Erro ao salvar transação.',isError:true);
+                          } else {
+                            ShowSnackBar(context, 'Erro ao salvar transação.',
+                                isError: true);
                           }
                         });
                       } else {
-                         ShowSnackBar(context, 'Por favor, insira um valor válido.',isError:true);
+                        ShowSnackBar(
+                            context, 'Por favor, insira um valor válido.',
+                            isError: true);
                       }
                     },
                   ),
@@ -88,6 +94,3 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 }
-
-
-
