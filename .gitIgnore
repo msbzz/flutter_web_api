@@ -1,9 +1,8 @@
 *.txt
 *.zip
 *.env
-/info/
 /temp/
-*.md
+
 
  
  
