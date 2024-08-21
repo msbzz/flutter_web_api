@@ -14,11 +14,22 @@ class Transaction {
     return 'Transaction{value: $value, contact: $contact}';
   }
 
-    factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
-      json['value'],
-      Contact.fromJson(json['contact']),
-    );
-    }
+  // factory Transaction.fromJson(Map<String, dynamic> json) {
+  //   return Transaction(
+  //     json['value'],
+  //     Contact.fromJson(json['contact']),
+  //   );
+  //   }
+
+ //deserialização
+Transaction.fromJson(Map<String, dynamic> json)
+      : value = json['value'],
+        contact = Contact.fromJson(json['contact']);
+
+  //serialização
+  Map<String,dynamic> toJson()=>{
+      'value':value,
+      'contact': contact.toJson() ,
+  };
 
 }
