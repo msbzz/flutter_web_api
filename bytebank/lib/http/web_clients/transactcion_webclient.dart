@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 import 'package:bytebank/http/webclient.dart';
-import 'package:bytebank/models/contact.dart';
+
 import 'package:bytebank/models/transanction.dart';
 
 class TransactionWebClient {
@@ -11,14 +11,16 @@ class TransactionWebClient {
         await client.get(url).timeout(const Duration(seconds: 4));
 
     final List<dynamic> decodedJson = jsonDecode(response.body);
+     
+    return  decodedJson.map((dynamic json)=> Transaction.fromJson(json)).toList();
 
-    final List<Transaction> transactions = [];
+    // final List<Transaction> transactions = [];
 
-    for (var json in decodedJson) {
-      transactions.add(Transaction.fromJson(json));
-    }
-
-    return transactions;
+    // for (var json in decodedJson) {
+    //   transactions.add(Transaction.fromJson(json));
+    // }
+    // return transactions;
+   
   }
 
   Future<Transaction> save(Transaction transaction) async {
@@ -28,7 +30,8 @@ class TransactionWebClient {
         headers: {'Content-type': 'application/json', 'password': '1000'},
         body: transactionJson);
 
-        return _toTransaction(response);
+        //return _toTransaction(response);
+        return Transaction.fromJson(jsonDecode(response.body));
     
   }
   
@@ -43,17 +46,18 @@ class TransactionWebClient {
 
   }
   
-  Transaction _toTransaction(Response response) {
-    Map<String, dynamic> responseJson = jsonDecode(response.body);
-    final Map<String, dynamic> contactJson = responseJson['contact'];
+  // Transaction _toTransaction(Response response) {
+  //   Map<String, dynamic> responseJson = jsonDecode(response.body);
+  //   final Map<String, dynamic> contactJson = responseJson['contact'];
 
-    return Transaction(
-      responseJson['value'],
-      Contact(
-        0,
-        contactJson['name'],
-        contactJson['accountNumber'],
-      ),
-    );
-  }
+  //   return Transaction(
+  //     responseJson['value'],
+  //     Contact(
+  //       0,
+  //       contactJson['name'],
+  //       contactJson['accountNumber'],
+  //     ),
+  //   );
+  // }
+
 }
